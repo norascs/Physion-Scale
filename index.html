@@ -1,0 +1,102 @@
+<html>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-slider-response@1.1.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-video-keyboard-response@1.1.1"></script>
+
+<script>
+
+
+/* initialize jsPsych */
+    var jsPsych = initJsPsych({
+        show_progress_bar: true,
+  on_finish: function() {
+ window.location.replace("https://physion-benchmark.github.io/")      }
+    });    
+    /* create timeline */
+    var timeline = [];
+
+    var preload = {
+      type: jsPsychPreload,
+      videos: ['video/vid1.mp4']
+    };
+    timeline.push(preload);
+
+    var welcome = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "You will be shown a series of physical scenarios. For each scenario, you will be asked how the scenario will evolve and have two response buttons (yes/no). Once you complete this process for several scenarios, you will receive a score showing how many were correct. Press the Y key to begin.",
+      choices: ['y','Y'],
+    };
+    timeline.push(welcome);
+
+
+var fixation = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: "NO_KEYS",
+  trial_duration: 1300,
+};
+timeline.push(fixation);
+
+// var vid1 = {
+//   type: jsPsychVideoButtonResponse,
+//   stimulus: [
+//     'video/vid1.mp4'
+//   ],
+//   choices: ['Yes', 'No'],
+//   prompt: "<p>Will the ball make it into the goal?</p>",
+//   response_allowed_while_playing: false,
+// };
+// timeline.push(vid1);
+
+var vid1 = {
+  type: jsPsychVideoKeyboardResponse,
+  stimulus: [
+    'video/vid1.mp4'
+  ],
+height: 330,
+  choices: "NO_KEYS",
+  trial_ends_after_video: true
+};
+
+timeline.push(vid1);
+
+var vid1response = {
+   type: jsPsychHtmlButtonResponse,
+   stimulus: 'Will the ball make it into the goal?',
+  choices: ['Yes', 'No'] 
+};
+var vid1responsee = {
+  type: jsPsychHtmlSliderResponse,
+    stimulus: `How confident are you in your answer?`,
+    require_movement: true,
+    labels: ['0: No Confidence', '1: Slight Confidence', '2: Moderate Confidence', '3: High Confidence']
+};
+timeline.push(vid1response);
+timeline.push(vid1responsee);
+
+var vid2 = {
+  type: jsPsychVideoKeyboardResponse,
+  stimulus: [
+    'video/vid2.mp4'
+  ],
+  height: 330,
+  choices: "NO_KEYS",
+  trial_ends_after_video: true
+};
+
+timeline.push(vid2);
+
+var endexperiment = {
+  type: jsPsychSurveyText,
+  questions: [
+    {prompt: 'Any questions, comments, concerns?'}
+  ]
+}
+timeline.push(endexperiment);
+
+
+
+
+jsPsych.run(timeline);
+</script>
